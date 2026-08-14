@@ -1,0 +1,10 @@
+.DS_Store
+
+# Build artifacts
+minrl
+minrl.app
+geticon
+diag
+AppIcon.icns
+AppIcon.iconset
+minrl.dSYM
