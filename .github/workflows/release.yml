@@ -33,7 +33,7 @@ jobs:
             -Wall -Wextra -Oz -flto -fvisibility=hidden -Wl,-dead_strip \
             -arch arm64 \
             -framework Cocoa -framework CoreGraphics -framework ApplicationServices
-          zip -rq "$BUNDLE.zip" "$BUNDLE"
+          zip -rq "${BUNDLE%.app}.zip" "$BUNDLE"
 
       - name: Build amd64 bundle
         run: |
@@ -48,7 +48,7 @@ jobs:
             -Wall -Wextra -Oz -flto -fvisibility=hidden -Wl,-dead_strip \
             -arch x86_64 \
             -framework Cocoa -framework CoreGraphics -framework ApplicationServices
-          zip -rq "$BUNDLE.zip" "$BUNDLE"
+          zip -rq "${BUNDLE%.app}.zip" "$BUNDLE"
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
