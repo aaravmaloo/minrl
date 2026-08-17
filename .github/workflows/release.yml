@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: macOS-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate icon
+        run: make icon
+
+      # Build one .app bundle per architecture, then zip each.
+      - name: Build arm64 bundle
+        run: |
+          set -euo pipefail
+          APP=minrl
+          BUNDLE=minrl-arm64.app
+          rm -rf "$BUNDLE"
+          mkdir -p "$BUNDLE/Contents/MacOS" "$BUNDLE/Contents/Resources"
+          cp Info.plist "$BUNDLE/Contents/Info.plist"
+          cp AppIcon.icns "$BUNDLE/Contents/Resources/AppIcon.icns"
+          clang -o "$BUNDLE/Contents/MacOS/$APP" main.m \
+            -Wall -Wextra -Oz -flto -fvisibility=hidden -Wl,-dead_strip \
+            -arch arm64 \
+            -framework Cocoa -framework CoreGraphics -framework ApplicationServices
+          zip -rq "$BUNDLE.zip" "$BUNDLE"
+
+      - name: Build amd64 bundle
+        run: |
+          set -euo pipefail
+          APP=minrl
+          BUNDLE=minrl-amd64.app
+          rm -rf "$BUNDLE"
+          mkdir -p "$BUNDLE/Contents/MacOS" "$BUNDLE/Contents/Resources"
+          cp Info.plist "$BUNDLE/Contents/Info.plist"
+          cp AppIcon.icns "$BUNDLE/Contents/Resources/AppIcon.icns"
+          clang -o "$BUNDLE/Contents/MacOS/$APP" main.m \
+            -Wall -Wextra -Oz -flto -fvisibility=hidden -Wl,-dead_strip \
+            -arch x86_64 \
+            -framework Cocoa -framework CoreGraphics -framework ApplicationServices
+          zip -rq "$BUNDLE.zip" "$BUNDLE"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            minrl-arm64.zip
+            minrl-amd64.zip
+          generate_release_notes: true
