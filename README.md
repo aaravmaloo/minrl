@@ -7,12 +7,14 @@
 Minimized windows stay minimized when you Cmd+Tab. minrl fixes that.
 
 ![macOS 12.0+](https://img.shields.io/badge/macOS-12.0%2B-000000?style=flat-square&logo=apple&logoColor=white)
-![Objective-C](https://img.shields.io/badge/Objective--C-5A6CF3?style=flat-square&logo=apple&logoColor=white)
-![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen?style=flat-square)
 
 </div>
 
 ---
+
+## Demo
+![demo GIF for minrl](assets/demo.gif)
+
 
 ## The problem
 
@@ -32,10 +34,6 @@ unminimizes every minimized window of that app, so the windows you expect are
 there when you arrive.
 
 Press Cmd+Tab. Your windows come back. Every time.
-
-## Demo
-
-![minrl in action](assets/demo.gif)
 
 ## Features
 
@@ -67,7 +65,7 @@ you tap Cmd+Tab quickly or hold Tab to cycle through apps before releasing.
 
 ### Build from source
 
-minrl builds with clang and a plain Makefile. No package manager required.
+minrl builds with clang and a plain Makefile.
 
 ```sh
 git clone https://github.com/aaravmaloo/minrl.git
@@ -75,6 +73,11 @@ cd minrl
 make bundle
 open minrl.app
 ```
+
+**Optionally: You can move the minrl.app bundle to your Applications folder.**
+
+### GitHub Releases
+You can also download the latest release from the [GitHub Releases](https://github.com/aaravmaloo/minrl/releases) page.
 
 ## Permissions
 
@@ -90,16 +93,6 @@ manually:
 The menu bar item includes an **Open Accessibility Settings...** entry that
 jumps straight there whenever you need it.
 
-## Usage
-
-Run minrl, grant permission, and go back to Cmd+Tabbing. That is the whole
-app. Click the menu bar icon to check the current state:
-
-- **active**: minrl is watching for switches
-- **needs Accessibility permission**: grant access in System Settings
-
-The status is the first item in the menu, followed by the accessibility
-settings shortcut and **Quit** (Cmd+Q).
 
 ## Build targets
 
@@ -126,17 +119,7 @@ extra detail, such as each detected switch and how many windows were
 restored, and also saves a copy of the rendered status icon to
 `/tmp/minrl_status_icon.png`, handy when tweaking the icon.
 
-## Project layout
-
-```
-main.m       Event tap, restore logic, menu bar app
-geticon.m    Renders the app icon PNGs used to build AppIcon.icns
-Makefile     Build targets
-Info.plist   App bundle metadata
-```
-
 ## Contributing
-
 This project is small and focused on purpose. Bug reports and small, surgical
 PRs are welcome. If you are planning something larger, open an issue first so
 we can talk it through.
